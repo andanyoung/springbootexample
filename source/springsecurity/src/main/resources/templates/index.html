@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<p>index</p>
+<div sec:authorize="!isAuthenticated()">
+    <span style="color: red">温馨提示：使用前请先登录<a th:href="@{/login}">登录</a></span>
+</div>
+
+<div sec:authorize="isAuthenticated()">
+    当前登录用户：<span sec:authentication="name">zhangWuJi</span>&nbsp;&nbsp;当前角色：<span
+        sec:authentication="principal.authorities"></span><br>
+    <a href="#" th:href="@{/logout}">注销</a><br><br>
+</div>
+
+<fieldset>
+    <legend>用户管理</legend>
+    <div sec:authorize="hasRole('topLevel')">
+        <a th:href="@{/user/addUser}">添加用户</a><br><br>
+    </div>
+    <div sec:authorize="hasAnyRole('topLevel','senior')">
+        <a th:href="@{/user/deleteUser/101}">删除用户</a><br><br>
+    </div>
+    <div sec:authorize="hasAnyRole('topLevel','senior','middleRank')">
+        <a th:href="@{/user/updateUser}">修改用户</a><br><br>
+    </div>
+    <a th:href="@{/user/findAllUsers}">查询用户</a><br><br>
+</fieldset>
+</body>
+</html>
